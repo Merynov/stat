@@ -1,28 +1,21 @@
 import asyncio
-
+import logging
 from aiogram import Bot, Dispatcher
-from aiogram.enums import ParseMode
-from aiogram.client.default import DefaultBotProperties
-
 from config_data.config import config
-from handlers import user_menu, user_offers, admin, channel_events
-from middlewares.db_middleware import DbSessionMiddleware
+from database.db import init_db
+
+logger = logging.getLogger(__name__)
 
 
 async def main():
-    bot = Bot(
-        token=config.BOT_TOKEN,
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
-    )
+    logging.basicConfig(level=logging.INFO)
 
+    await init_db()
+    logger.info("База данных успешно инициализирована")
+
+    bot = Bot(token=config.bot_token.get_secret_value())
     dp = Dispatcher()
 
-    dp.update.middleware(DbSessionMiddleware())
-
-    dp.include_router(user_menu.router)
-    dp.include_router(user_offers.router)
-    dp.include_router(admin.router)
-    dp.include_router(channel_events.router)
 
     await dp.start_polling(bot)
 

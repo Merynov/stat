@@ -2,17 +2,24 @@ import asyncio
 from logging.config import fileConfig
 
 from sqlalchemy import pool
-from sqlalchemy.ext.asyncio import async_engine_from_config, create_async_engine # Добавь импорт create_async_engine
+from sqlalchemy.ext.asyncio import create_async_engine
 
+# Вот правильный импорт контекста:
 from alembic import context
 
-\import sys
+import sys
 from pathlib import Path
-\sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from config_data.config import config as bot_config
 from database.base import Base
-\# -----------------------------------
+from database.models import User, Offer
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from config_data.config import config as bot_config
+from database.base import Base
+# -----------------------------------
 
 config = context.config
 
