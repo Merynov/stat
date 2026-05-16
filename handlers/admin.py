@@ -1,16 +1,15 @@
 from aiogram import Router, types
 from aiogram.filters import CommandStart
-from database.db import AsyncSessionLocal
-from database.models import User
-from sqlalchemy import select
+# Импортируем твою готовую реплай-клавиатуру
+from keyboards.reply import main_menu
 
-# Создаем роутер, который мы потом импортировали в main.py
 router = Router()
 
 @router.message(CommandStart())
 async def cmd_start(message: types.Message):
-    # Самый простой текстовый ответ для проверки связи
     await message.answer(
         f"Привет, {message.from_user.full_name}!\n"
-        f"Бот успешно связался с базой данных `cpa_db` и готов к работе. 🚀"
+        f"Добро пожаловать в панель **Grip Team** 🚀\n\n"
+        f"Выбери нужный раздел на клавиатуре внизу:",
+        reply_markup=main_menu  # Прикрепляем твои Reply-кнопки
     )
